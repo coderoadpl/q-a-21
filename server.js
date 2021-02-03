@@ -30,15 +30,16 @@ app.get('/messages', (req, res) => {
 app.post('/messages', (req, res) => {
   const { message, email } = req.body
 
-  console.log({ message, email })
-
   if(!message) return res.status(400).send()
   if(!email) return res.status(400).send()
 
-  res.json({
-    message,
-    email
-  })
+  connection.query(
+    `INSERT INTO \`messages\` (\`id\`, \`email\`, \`message\`) VALUES (NULL, '${email}', '${message}')`,
+    (error, results, fields) => {
+      if (error) throw error
+      res.json(results)
+    }
+  )
 
 })
 
