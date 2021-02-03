@@ -14,14 +14,18 @@ const connection = mysql.createConnection({
  
 connection.connect()
 
-connection.query('SELECT * FROM messages', (error, results, fields) => {
-  if (error) throw error
-  console.log(results)
-})
-
 app.use('/', express.static('public'))
 
-app.get('/message', (req, res) => {
+app.get('/messages', (req, res) => {
+
+  connection.query('SELECT * FROM messages', (error, results, fields) => {
+    if (error) throw error
+    res.json(results)
+  })
+
+})
+
+app.post('/messages', (req, res) => {
   const { message, email } = req.query
 
   if(!message) return res.status(400).send()
