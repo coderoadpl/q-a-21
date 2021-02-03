@@ -36,7 +36,7 @@
   <script>
     const button = document.querySelector('.contact-form__button')
 
-    const sendEmail = (e) => {
+    const saveMessage = (e) => {
       e.preventDefault()
 
       const emailInput = document.querySelector('.contact-form__input--email')
@@ -45,18 +45,26 @@
       const email = emailInput.value
       const message = messageInput.value
 
-      console.log("EMAIL!", email, message)
-      fetch(`/message?message=${message}&email=${email}`)
+      fetch('/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          message,
+        })
+      })
         .then((response) => {
           if (response.status !== 200) throw new Error()
-          alert('Massage sent!')
+          alert('Massage saved!')
         })
         .catch(() => alert('Something went wrong!'))
     }
 
     button.addEventListener(
       'click',
-      sendEmail
+      saveMessage
     )
   </script>
 

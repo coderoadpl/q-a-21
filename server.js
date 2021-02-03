@@ -1,8 +1,10 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const mysql      = require('mysql')
 require('dotenv').config()
 
 const app = express()
+app.use(bodyParser.json())
 const port = 3333
 
 const connection = mysql.createConnection({
@@ -26,7 +28,9 @@ app.get('/messages', (req, res) => {
 })
 
 app.post('/messages', (req, res) => {
-  const { message, email } = req.query
+  const { message, email } = req.body
+
+  console.log({ message, email })
 
   if(!message) return res.status(400).send()
   if(!email) return res.status(400).send()
