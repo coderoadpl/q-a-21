@@ -34,7 +34,11 @@ app.post('/messages', (req, res) => {
   if(!email) return res.status(400).send()
 
   connection.query(
-    `INSERT INTO \`messages\` (\`id\`, \`email\`, \`message\`) VALUES (NULL, '${email}', '${message}')`,
+    `INSERT INTO \`messages\` (\`id\`, \`email\`, \`message\`) VALUES (NULL, ?, ?)`,
+    [
+      email,
+      message
+    ],
     (error, results, fields) => {
       if (error) throw error
       res.json(results)
